@@ -4,6 +4,7 @@ import com.alex.mysticalagriculture.blockentities.ReprocessorBlockEntity;
 import com.alex.mysticalagriculture.crafting.recipe.ReprocessorRecipe;
 import com.alex.mysticalagriculture.init.RecipeTypes;
 import com.alex.mysticalagriculture.init.ScreenHandlerTypes;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -16,6 +17,7 @@ import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.function.Function;
@@ -27,8 +29,8 @@ public class ReprocessorContainer extends ScreenHandler {
     private final RecipeType<? extends ReprocessorRecipe> recipeType;
 
 
-    private ReprocessorContainer(ScreenHandlerType<?> type, RecipeType<? extends ReprocessorRecipe> recipeType, int id, PlayerInventory playerInventory) {
-        this(type, recipeType, id, playerInventory, p -> false, (new ReprocessorBlockEntity.Basic()).toInventory(), new ArrayPropertyDelegate(6));
+    private ReprocessorContainer(ScreenHandlerType<?> type, RecipeType<? extends ReprocessorRecipe> recipeType, int id, PlayerInventory playerInventory, BlockPos pos, BlockState state) {
+        this(type, recipeType, id, playerInventory, p -> false, (new ReprocessorBlockEntity.Basic(pos, state)).toInventory(), new ArrayPropertyDelegate(6));
     }
 
     private ReprocessorContainer(ScreenHandlerType<?> type, RecipeType<? extends ReprocessorRecipe> recipeType, int id, PlayerInventory playerInventory, Function<PlayerEntity, Boolean> isUsableByPlayer, Inventory inventory, PropertyDelegate data) {
@@ -79,7 +81,7 @@ public class ReprocessorContainer extends ScreenHandler {
                     return ItemStack.EMPTY;
                 }
 
-                slot.onStackChanged(itemstack1, itemstack);
+                slot.onQuickTransfer(itemstack1, itemstack);
             } else if (index != 1 && index != 0) {
                 if (this.isSmeltable(itemstack1)) {
                     if (!this.insertItem(itemstack1, 0, 1, false)) {
@@ -124,8 +126,8 @@ public class ReprocessorContainer extends ScreenHandler {
         return AbstractFurnaceBlockEntity.canUseAsFuel(itemStack);
     }
 
-    public static ReprocessorContainer create(int windowId, PlayerInventory playerInventory) {
-        return new ReprocessorContainer(ScreenHandlerTypes.REPROCESSOR, RecipeTypes.REPROCESSOR, windowId, playerInventory);
+    public static ReprocessorContainer create(int windowId, PlayerInventory playerInventory, BlockPos pos, BlockState state) {
+        return new ReprocessorContainer(ScreenHandlerTypes.REPROCESSOR, RecipeTypes.REPROCESSOR, windowId, playerInventory, pos ,state);
     }
 
     public static ReprocessorContainer create(int windowId, PlayerInventory playerInventory, Function<PlayerEntity, Boolean> isUsableByPlayer, Inventory inventory, PropertyDelegate data) {

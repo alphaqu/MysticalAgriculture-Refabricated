@@ -1,5 +1,6 @@
 package com.alex.mysticalagriculture.crafting.recipe;
 
+import com.alex.mysticalagriculture.mixin.ShapedRecipeAccessor;
 import com.google.gson.JsonObject;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
@@ -41,12 +42,12 @@ public class ShapedTransferDamageRecipe extends ShapedRecipe {
         @Override
         public ShapedRecipe read(Identifier identifier, JsonObject jsonObject) {
             String s = JsonHelper.getString(jsonObject, "group", "");
-            Map<String, Ingredient> map = ShapedRecipe.getComponents(JsonHelper.getObject(jsonObject, "key"));
+            Map<String, Ingredient> map = ShapedRecipeAccessor.invokeReadSymbols(JsonHelper.getObject(jsonObject, "key"));
             String[] astring = ShapedRecipe.getPattern(JsonHelper.getArray(jsonObject, "pattern"));
             int i = astring[0].length();
             int j = astring.length;
-            DefaultedList<Ingredient> nonnulllist = ShapedRecipe.getIngredients(astring, map, i, j);
-            ItemStack itemstack = ShapedRecipe.getItemStack(JsonHelper.getObject(jsonObject, "result"));
+            DefaultedList<Ingredient> nonnulllist = ShapedRecipeAccessor.invokeCreatePatternMatrix(astring, map, i, j);
+            ItemStack itemstack = ShapedRecipe.getItem(JsonHelper.getObject(jsonObject, "result")).getDefaultStack();
             return new ShapedTransferDamageRecipe(identifier, s, i, j, nonnulllist, itemstack);
         }
 
@@ -71,7 +72,7 @@ public class ShapedTransferDamageRecipe extends ShapedRecipe {
             packetByteBuf.writeVarInt(shapedRecipe.getHeight());
             packetByteBuf.writeString(shapedRecipe.group);
 
-            for (Ingredient ingredient : shapedRecipe.getPreviewInputs()) {
+            for (Ingredient ingredient : shapedRecipe.getIngredients()) {
                 ingredient.write(packetByteBuf);
             }
 

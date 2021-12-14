@@ -1,6 +1,7 @@
 package com.alex.mysticalagriculture.blocks;
 
 import com.alex.mysticalagriculture.blockentities.EssenceFurnaceBlockEntity;
+import com.alex.mysticalagriculture.blockentities.ReprocessorBlockEntity;
 import com.alex.mysticalagriculture.lib.ModTooltips;
 import net.minecraft.block.AbstractFurnaceBlock;
 import net.minecraft.block.BlockState;
@@ -20,6 +21,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
 public class EssenceFurnaceBlock extends AbstractFurnaceBlock {
@@ -41,9 +43,10 @@ public class EssenceFurnaceBlock extends AbstractFurnaceBlock {
 
     @Nullable
     @Override
-    public BlockEntity createBlockEntity(BlockView world) {
-        return this.tier.getNewTileEntity();
+    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+        return this.tier.getNewTileEntity(pos, state);
     }
+
 
     @Override
     public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack) {
@@ -85,9 +88,9 @@ public class EssenceFurnaceBlock extends AbstractFurnaceBlock {
         private final String name;
         private final double cookTimeMultiplier;
         private final double burnTimeMultiplier;
-        private final Supplier<EssenceFurnaceBlockEntity> tileEntitySupplier;
+        private final BiFunction<BlockPos, BlockState, EssenceFurnaceBlockEntity> tileEntitySupplier;
 
-        FurnaceTier(String name, double cookTimeMultiplier, double burnTimeMultiplier, Supplier<EssenceFurnaceBlockEntity> tileEntitySupplier) {
+        FurnaceTier(String name, double cookTimeMultiplier, double burnTimeMultiplier, BiFunction<BlockPos, BlockState, EssenceFurnaceBlockEntity> tileEntitySupplier) {
             this.name = name;
             this.cookTimeMultiplier = cookTimeMultiplier;
             this.burnTimeMultiplier = burnTimeMultiplier;
@@ -106,8 +109,8 @@ public class EssenceFurnaceBlock extends AbstractFurnaceBlock {
             return this.burnTimeMultiplier;
         }
 
-        public EssenceFurnaceBlockEntity getNewTileEntity() {
-            return this.tileEntitySupplier.get();
+        public EssenceFurnaceBlockEntity getNewTileEntity(BlockPos pos, BlockState state) {
+            return this.tileEntitySupplier.apply(pos, state);
         }
     }
 }

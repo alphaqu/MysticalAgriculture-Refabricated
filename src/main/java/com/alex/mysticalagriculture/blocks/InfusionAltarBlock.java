@@ -50,9 +50,11 @@ public class InfusionAltarBlock extends BaseBlockEntity implements BlockEntityPr
         super(Material.STONE, BlockSoundGroup.STONE, 10.0F, 12.0F, FabricToolTags.PICKAXES);
     }
 
+
+    @Nullable
     @Override
-    public BlockEntity createBlockEntity(BlockView blockView) {
-        return new InfusionAltarBlockEntity();
+    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+        return new InfusionAltarBlockEntity(pos, state);
     }
 
     @Override

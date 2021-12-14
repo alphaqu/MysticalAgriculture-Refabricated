@@ -1,10 +1,7 @@
 package com.alex.mysticalagriculture.util.crafting;
 
 import com.google.common.base.Stopwatch;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
@@ -117,11 +114,11 @@ public class TagMapper {
     }
 
     private static Item addTagToFile(String tagId, JsonObject json, File file) {
-        Tag<Item> tag = ServerTagManagerHolder.getTagManager().getItems().getTag(new Identifier(tagId));
+        Tag<Item> tag = ServerTagManagerHolder.getTagManager().getTag(Registry.ITEM_KEY, new Identifier(tagId), id -> new JsonParseException("Can't find tag: " + id));
         Item item = tag == null ? Items.AIR : tag.values().stream().findFirst().orElse(Items.AIR);
 
         String itemId = "null";
-        if (Registry.ITEM.getId(item) != null && item != Items.AIR) {
+        if (item != Items.AIR) {
             itemId = Registry.ITEM.getId(item).toString();
         }
 

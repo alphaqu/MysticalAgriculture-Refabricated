@@ -22,7 +22,7 @@ public class TinkeringTableScreen extends BaseHandledScreen<TinkeringTableContai
     protected void drawForeground(MatrixStack matrices, int mouseX, int mouseY) {
         String title = this.getTitle().getString();
         this.textRenderer.draw(matrices, title, (float) (this.backgroundWidth / 2 - this.textRenderer.getWidth(title) / 2), 6.0F, 4210752);
-        String inventory = this.playerInventory.getDisplayName().getString();
+        String inventory = this.playerInventoryTitle.getString();
         this.textRenderer.draw(matrices, inventory, 8.0F, (float) (this.backgroundHeight - 96 + 2), 4210752);
     }
 
@@ -34,7 +34,7 @@ public class TinkeringTableScreen extends BaseHandledScreen<TinkeringTableContai
         int y = this.y;
 
         for (Slot slot : this.handler.slots) {
-            if (slot.doDrawHoveringEffect() && slot instanceof ToggleableSlot) {
+            if (slot.isEnabled() && slot instanceof ToggleableSlot) {
                 this.drawTexture(matrices, x + slot.x, y + slot.y, 8, 115, 16, 16);
             }
         }

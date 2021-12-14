@@ -1,6 +1,5 @@
 package com.alex.mysticalagriculture.util.blockentity;
 
-import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
@@ -10,7 +9,7 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -18,13 +17,13 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Iterator;
 
-public class BaseInventoryBlockEntity extends BlockEntity implements SidedInventory, BlockEntityClientSerializable {
+public class BaseInventoryBlockEntity extends BlockEntity implements SidedInventory {
     private final int size;
     private final DefaultedList<ItemStack> stacks;
 
 
-    public BaseInventoryBlockEntity(BlockEntityType<?> type, int size) {
-        super(type);
+    public BaseInventoryBlockEntity(BlockEntityType<?> type, int size, BlockPos pos, BlockState state) {
+        super(type, pos, state);
         this.size = size;
         this.stacks = DefaultedList.ofSize(size, ItemStack.EMPTY);
     }
@@ -124,29 +123,15 @@ public class BaseInventoryBlockEntity extends BlockEntity implements SidedInvent
     }
 
     @Override
-    public void fromTag(BlockState state, CompoundTag tag) {
-        super.fromTag(state, tag);
-        Inventories.fromTag(tag, stacks);
+    public void readNbt(NbtCompound tag) {
+        super.readNbt(tag);
+        Inventories.readNbt(tag, stacks);
     }
 
     @Override
-    public CompoundTag toTag(CompoundTag tag) {
-        super.toTag(tag);
-        Inventories.toTag(tag, stacks);
-
-        return tag;
-    }
-
-    @Override
-    public void fromClientTag(CompoundTag tag) {
-        stacks.clear();
-        Inventories.fromTag(tag, stacks);
-    }
-
-    @Override
-    public CompoundTag toClientTag(CompoundTag tag) {
-        Inventories.toTag(tag, stacks);
-        return super.toTag(tag);
+    public void writeNbt(NbtCompound tag) {
+        super.writeNbt(tag);
+        Inventories.writeNbt(tag, stacks);
     }
 
     public Inventory toInventory() {

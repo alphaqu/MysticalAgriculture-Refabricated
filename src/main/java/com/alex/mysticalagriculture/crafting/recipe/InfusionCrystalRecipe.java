@@ -23,14 +23,15 @@ public class InfusionCrystalRecipe extends ShapedRecipe {
         return getOutput().copy();
     }
 
-    @Override
-    public DefaultedList<ItemStack> getRemainingStacks(CraftingInventory inventory) {
-        DefaultedList<ItemStack> defaultedList = DefaultedList.ofSize(inventory.size(), ItemStack.EMPTY);
 
-        for(int i = 0; i < inventory.size(); ++i) {
-            ItemStack invStack = inventory.getStack(i);
+    @Override
+    public DefaultedList<ItemStack> getRemainder(CraftingInventory inv) {
+        DefaultedList<ItemStack> defaultedList = DefaultedList.ofSize(inv.size(), ItemStack.EMPTY);
+
+        for(int i = 0; i < inv.size(); ++i) {
+            ItemStack invStack = inv.getStack(i);
             if (invStack.getItem() instanceof FabricRecipeRemainder) {
-                ItemStack remainder = ((FabricRecipeRemainder) invStack.getItem()).getRemainder(invStack.copy(), inventory, null);
+                ItemStack remainder = ((FabricRecipeRemainder) invStack.getItem()).getRemainder(invStack.copy(), inv, null);
                 defaultedList.set(i, remainder);
             }
         }
@@ -48,13 +49,13 @@ public class InfusionCrystalRecipe extends ShapedRecipe {
         public InfusionCrystalRecipe read(Identifier identifier, JsonObject jsonObject) {
             ShapedRecipe shaped = super.read(identifier, jsonObject);
             String string = JsonHelper.getString(jsonObject, "group", "");
-            return new InfusionCrystalRecipe(shaped.getId(), string, shaped.getWidth(), shaped.getHeight(), shaped.getPreviewInputs(), shaped.getOutput());
+            return new InfusionCrystalRecipe(shaped.getId(), string, shaped.getWidth(), shaped.getHeight(), shaped.getIngredients(), shaped.getOutput());
         }
 
         @Override
         public InfusionCrystalRecipe read(Identifier identifier, PacketByteBuf packetByteBuf) {
             ShapedRecipe shaped = super.read(identifier, packetByteBuf);
-            return new InfusionCrystalRecipe(shaped.getId(), shaped.group, shaped.getWidth(), shaped.getHeight(), shaped.getPreviewInputs(), shaped.getOutput());
+            return new InfusionCrystalRecipe(shaped.getId(), shaped.group, shaped.getWidth(), shaped.getHeight(), shaped.getIngredients(), shaped.getOutput());
         }
 
 

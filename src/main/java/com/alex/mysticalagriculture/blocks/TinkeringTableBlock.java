@@ -42,8 +42,8 @@ public class TinkeringTableBlock extends BaseBlockEntity implements BlockEntityP
 
     @Nullable
     @Override
-    public BlockEntity createBlockEntity(BlockView world) {
-        return new TinkeringTableBlockEntity();
+    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+        return new TinkeringTableBlockEntity(pos, state);
     }
 
     @Override

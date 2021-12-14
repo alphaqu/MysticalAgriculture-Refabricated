@@ -7,14 +7,12 @@ import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.Vec3f;
 
-public class InfusionPedestalRenderer extends BlockEntityRenderer<InfusionPedestalBlockEntity> {
-    public InfusionPedestalRenderer(BlockEntityRenderDispatcher dispatcher) {
-        super(dispatcher);
-    }
+public class InfusionPedestalRenderer implements BlockEntityRenderer<InfusionPedestalBlockEntity> {
+
 
     @Override
     public void render(InfusionPedestalBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
@@ -27,8 +25,8 @@ public class InfusionPedestalRenderer extends BlockEntityRenderer<InfusionPedest
             matrices.scale(scale, scale, scale);
             double tick = System.currentTimeMillis() / 800.0D;
             matrices.translate(0.0D, Math.sin(tick % (2 * Math.PI)) * 0.065D, 0.0D);
-            matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion((float) ((tick * 40.0D) % 360)));
-            MinecraftClient.getInstance().getItemRenderer().renderItem(stack, ModelTransformation.Mode.GROUND, light, overlay, matrices, vertexConsumers);
+            matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion((float) ((tick * 40.0D) % 360)));
+            MinecraftClient.getInstance().getItemRenderer().renderItem(stack, ModelTransformation.Mode.GROUND, light, overlay, matrices, vertexConsumers, 0);
             matrices.pop();
         }
     }

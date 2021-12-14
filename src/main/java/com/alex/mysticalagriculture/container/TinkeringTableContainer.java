@@ -8,6 +8,7 @@ import com.alex.mysticalagriculture.container.slot.AugmentSlot;
 import com.alex.mysticalagriculture.container.slot.ElementSlot;
 import com.alex.mysticalagriculture.container.slot.TinkerableSlot;
 import com.alex.mysticalagriculture.init.ScreenHandlerTypes;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -16,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
+import net.minecraft.util.math.BlockPos;
 
 import java.util.function.Function;
 
@@ -24,8 +26,8 @@ public class TinkeringTableContainer extends ScreenHandler {
     private final Function<PlayerEntity, Boolean> isUsableByPlayer;
     private final Inventory inventory;
 
-    private TinkeringTableContainer(ScreenHandlerType<?> type, int id, PlayerInventory playerInventory) {
-        this(type, id, playerInventory, p -> false, (new TinkeringTableBlockEntity()).toInventory());
+    private TinkeringTableContainer(ScreenHandlerType<?> type, int id, PlayerInventory playerInventory, BlockPos pos, BlockState state) {
+        this(type, id, playerInventory, p -> false, (new TinkeringTableBlockEntity(pos, state)).toInventory());
     }
 
     private TinkeringTableContainer(ScreenHandlerType<?> type, int id, PlayerInventory playerInventory, Function<PlayerEntity, Boolean> isUsableByPlayer, Inventory inventory) {
@@ -84,8 +86,8 @@ public class TinkeringTableContainer extends ScreenHandler {
         return ItemStack.EMPTY;
     }
 
-    public static TinkeringTableContainer create(int windowId, PlayerInventory playerInventory) {
-        return new TinkeringTableContainer(ScreenHandlerTypes.TINKERING_TABLE, windowId, playerInventory);
+    public static TinkeringTableContainer create(int windowId, PlayerInventory playerInventory, BlockPos pos, BlockState state) {
+        return new TinkeringTableContainer(ScreenHandlerTypes.TINKERING_TABLE, windowId, playerInventory, pos, state);
     }
 
     public static TinkeringTableContainer create(int windowId, PlayerInventory playerInventory, Function<PlayerEntity, Boolean> isUsableByPlayer, Inventory inventory) {

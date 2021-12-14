@@ -26,6 +26,6 @@ public class ServerResourceManagerMixin {
     )
     private void initcRecipeManager(CommandManager.RegistrationEnvironment registrationEnvironment, int i, CallbackInfo ci) {
         mysticalagriculture_cRecipeManager = new ConditionalRecipeManager((ServerResourceManager) (Object) this);
-        this.resourceManager.registerListener(this.mysticalagriculture_cRecipeManager);
+        this.resourceManager.registerReloader(this.mysticalagriculture_cRecipeManager);
     }
 }

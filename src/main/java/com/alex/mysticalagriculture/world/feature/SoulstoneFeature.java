@@ -10,6 +10,7 @@ import net.minecraft.world.WorldAccess;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.OreFeatureConfig;
+import net.minecraft.world.gen.feature.util.FeatureContext;
 
 import java.util.BitSet;
 import java.util.Random;
@@ -20,7 +21,11 @@ public class SoulstoneFeature extends Feature<OreFeatureConfig> {
     }
 
     @Override
-    public boolean generate(StructureWorldAccess world, ChunkGenerator chunkGenerator, Random random, BlockPos pos, OreFeatureConfig config) {
+    public boolean generate(FeatureContext<OreFeatureConfig> context) {
+        final Random random = context.getRandom();
+        final BlockPos pos = context.getOrigin();
+        final OreFeatureConfig config = context.getConfig();
+        final StructureWorldAccess world = context.getWorld();
         float f = random.nextFloat() * (float) Math.PI;
         float f1 = (float) config.size / 8.0F;
         int i = MathHelper.ceil(((float) config.size / 16.0F * 2.0F + 1.0F) / 2.0F);
@@ -46,6 +51,7 @@ public class SoulstoneFeature extends Feature<OreFeatureConfig> {
 
         return false;
     }
+
 
     protected boolean func_207803_a(WorldAccess world, Random random, OreFeatureConfig config, double p_207803_4_, double p_207803_6_, double p_207803_8_, double p_207803_10_, double p_207803_12_, double p_207803_14_, int p_207803_16_, int p_207803_17_, int p_207803_18_, int p_207803_19_, int p_207803_20_) {
         int i = 0;
@@ -112,11 +118,12 @@ public class SoulstoneFeature extends Feature<OreFeatureConfig> {
                                         if (!bitset.get(k2)) {
                                             bitset.set(k2);
                                             blockpos$mutableblockpos.set(l1, i2, j2);
-                                            if (config.target.test(world.getBlockState(blockpos$mutableblockpos), random)) {
+                                            if (config.targets.stream().allMatch((target) -> target.target.test(world.getBlockState(blockpos$mutableblockpos), random))) {
                                                 if (/*Blocks.SOULIUM_ORE. &&*/ random.nextDouble() < 0.05 /*ModConfigs.SOULIUM_ORE_CHANCE.get()*/) {
                                                     world.setBlockState(blockpos$mutableblockpos, Blocks.SOULIUM_ORE.getDefaultState(), 2);
                                                 } else {
-                                                    world.setBlockState(blockpos$mutableblockpos, config.state, 2);
+                                                    // TODO what does this do
+                                                   // world.setBlockState(blockpos$mutableblockpos, config.state, 2);
                                                 }
 
                                                 i++;

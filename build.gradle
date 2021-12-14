@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '0.6-SNAPSHOT'
+	id 'fabric-loom' version '0.10-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -50,21 +50,19 @@ dependencies {
 
 	// PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
 	// You may need to force-disable transitiveness on them.
-	
-	modCompile("me.shedaniel:RoughlyEnoughItems:${project.rei_version}")
-	
+
+	modCompileOnly "me.shedaniel:RoughlyEnoughItems-api-fabric:${project.rei_version}"
+	modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
+
 	include modImplementation ("com.github.Draylar:magna:${project.magna_version}") {
         exclude group: "net.fabricmc"
         exclude group: "com.jamieswhiteshirt"
         exclude group: "me.shedaniel.cloth"
-		exclude group: "io.github.prospector", module: "modmenu"
+		exclude group: "com.terraformersmc", module: "modmenu"
 	}
 
-	modImplementation "io.github.cottonmc:LibCD:${project.libcd_version}"
-	include "io.github.cottonmc:LibCD:${project.libcd_version}"
-
 	// Columns
-	modImplementation "curse.maven:columns-385230:3107117"
+	modImplementation "curse.maven:columns-385230:3467926"
 
 }
 

@@ -14,7 +14,7 @@ public class ItemRendererMixin {
     private ItemStack disableDurabilityBar(ItemStack stack) {
         if (stack.getItem() instanceof InfusionCrystalItem) {
             ItemStack stack1 = stack.copy();
-            stack1.getOrCreateTag().putBoolean("Unbreakable", true);
+            stack1.getOrCreateNbt().putBoolean("Unbreakable", true);
             return stack1;
         }
         return stack;

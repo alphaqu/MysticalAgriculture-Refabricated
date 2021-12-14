@@ -9,7 +9,8 @@
     "JsonDataLoaderMixin",
     "LivingEntityMixin",
     "RecipeManagerAccessor",
-    "ServerResourceManagerMixin"
+    "ServerResourceManagerMixin",
+    "ShapedRecipeAccessor"
   ],
   "client": [
     "ClientRecipeBookMixin",

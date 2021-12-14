@@ -23,8 +23,8 @@ public class FarmlandTillRecipe extends ShapelessRecipe {
     }
 
     @Override
-    public DefaultedList<ItemStack> getRemainingStacks(CraftingInventory inv) {
-        DefaultedList<ItemStack> remaining = super.getRemainingStacks(inv);
+    public DefaultedList<ItemStack> getRemainder(CraftingInventory inv) {
+        DefaultedList<ItemStack> remaining = super.getRemainder(inv);
         for (int i = 0; i < inv.size(); i++) {
             ItemStack stack = inv.getStack(i);
             if (stack.getItem() instanceof HoeItem) {
@@ -50,7 +50,7 @@ public class FarmlandTillRecipe extends ShapelessRecipe {
             if (ingredients.isEmpty()) {
                 throw new JsonParseException("No ingredients for shapeless recipe");
             } else {
-                ItemStack itemstack = ShapedRecipe.getItemStack(JsonHelper.getObject(json, "result"));
+                ItemStack itemstack = ShapedRecipe.getItem(JsonHelper.getObject(json, "result")).getDefaultStack();
                 return new FarmlandTillRecipe(recipeId, s, itemstack, ingredients);
             }
         }
@@ -85,9 +85,9 @@ public class FarmlandTillRecipe extends ShapelessRecipe {
         @Override
         public void write(PacketByteBuf buffer, FarmlandTillRecipe recipe) {
             buffer.writeString(recipe.group);
-            buffer.writeVarInt(recipe.getPreviewInputs().size());
+            buffer.writeVarInt(recipe.getIngredients().size());
 
-            for (Ingredient ingredient : recipe.getPreviewInputs()) {
+            for (Ingredient ingredient : recipe.getIngredients()) {
                 ingredient.write(buffer);
             }
 

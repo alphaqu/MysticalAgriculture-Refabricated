@@ -4,28 +4,30 @@ import com.alex.mysticalagriculture.container.TinkeringTableContainer;
 import com.alex.mysticalagriculture.init.BlockEntities;
 import com.alex.mysticalagriculture.util.blockentity.BaseInventoryBlockEntity;
 import com.alex.mysticalagriculture.util.util.Localizable;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
+import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 
 public class TinkeringTableBlockEntity extends BaseInventoryBlockEntity implements NamedScreenHandlerFactory, SidedInventory {
 
-    public TinkeringTableBlockEntity() {
-        super(BlockEntities.TINKERING_TABLE, 7);
-    }
+	public TinkeringTableBlockEntity(BlockPos pos, BlockState state) {
+		super(BlockEntities.TINKERING_TABLE, 7, pos, state);
+	}
 
-    @Override
-    public Text getDisplayName() {
-        return Localizable.of("container.mysticalagriculture.tinkering_table").build();
-    }
+	@Override
+	public Text getDisplayName() {
+		return Localizable.of("container.mysticalagriculture.tinkering_table").build();
+	}
 
-    @Nullable
-    @Override
-    public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
-        return TinkeringTableContainer.create(syncId, inv, this::isUsableByPlayer, this);
-    }
+	@Nullable
+	@Override
+	public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
+		return TinkeringTableContainer.create(syncId, inv, this::isUsableByPlayer, this);
+	}
 }

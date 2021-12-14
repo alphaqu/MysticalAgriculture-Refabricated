@@ -33,7 +33,7 @@ public class EssenceLeggingsItem extends BaseArmorItem implements Tinkerable {
     private final int tinkerableTier;
     private final int slots;
 
-    public EssenceLeggingsItem(ArmorMaterial material, int tinkerableTier, int slots, Function<Item.Settings, Item.Settings> settings) {
+    public EssenceLeggingsItem(ArmorMaterial material, int tinkerableTier, int slots, Function<Settings, Settings> settings) {
         super(material, EquipmentSlot.LEGS, settings);
         this.tinkerableTier = tinkerableTier;
         this.slots = slots;

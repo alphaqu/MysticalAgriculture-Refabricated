@@ -45,7 +45,7 @@ public class InfusionRecipe implements SpecialRecipe {
     }
 
     @Override
-    public DefaultedList<Ingredient> getPreviewInputs() {
+    public DefaultedList<Ingredient> getIngredients() {
         return this.inputs;
     }
 
@@ -130,7 +130,7 @@ public class InfusionRecipe implements SpecialRecipe {
                 }
             }
 
-            ItemStack output = ShapedRecipe.getItemStack(json.getAsJsonObject("result"));
+            ItemStack output = ShapedRecipe.getItem(json.getAsJsonObject("result")).getDefaultStack();
 
             return new InfusionRecipe(id, inputs, output);
         }

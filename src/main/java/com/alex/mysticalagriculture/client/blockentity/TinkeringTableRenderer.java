@@ -9,15 +9,12 @@ import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
 
-public class TinkeringTableRenderer extends BlockEntityRenderer<TinkeringTableBlockEntity> {
-    public TinkeringTableRenderer(BlockEntityRenderDispatcher dispatcher) {
-        super(dispatcher);
-    }
+public class TinkeringTableRenderer implements BlockEntityRenderer<TinkeringTableBlockEntity> {
 
     @Override
     public void render(TinkeringTableBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
@@ -34,21 +31,21 @@ public class TinkeringTableRenderer extends BlockEntityRenderer<TinkeringTableBl
             matrices.translate(0.5D, 0.9D, 0.5D);
             float scale = 0.7F;
             matrices.scale(scale, scale, scale);
-            matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(90));
+            matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(90));
             int index = state.get(TinkeringTableBlock.FACING).getHorizontal();
             if (index == 0) {
-                matrices.multiply(Vector3f.NEGATIVE_Z.getDegreesQuaternion(270));
-                matrices.multiply(Vector3f.NEGATIVE_Y.getDegreesQuaternion(90));
+                matrices.multiply(Vec3f.NEGATIVE_Z.getDegreesQuaternion(270));
+                matrices.multiply(Vec3f.NEGATIVE_Y.getDegreesQuaternion(90));
             } else if (index == 1) {
-                matrices.multiply(Vector3f.NEGATIVE_X.getDegreesQuaternion(90));
+                matrices.multiply(Vec3f.NEGATIVE_X.getDegreesQuaternion(90));
             } else if (index == 2) {
-                matrices.multiply(Vector3f.NEGATIVE_Z.getDegreesQuaternion(90));
-                matrices.multiply(Vector3f.NEGATIVE_Y.getDegreesQuaternion(270));
+                matrices.multiply(Vec3f.NEGATIVE_Z.getDegreesQuaternion(90));
+                matrices.multiply(Vec3f.NEGATIVE_Y.getDegreesQuaternion(270));
             } else if (index == 3) {
-                matrices.multiply(Vector3f.NEGATIVE_X.getDegreesQuaternion(270));
+                matrices.multiply(Vec3f.NEGATIVE_X.getDegreesQuaternion(270));
             }
 
-            MinecraftClient.getInstance().getItemRenderer().renderItem(stack, ModelTransformation.Mode.FIXED, light, overlay, matrices, vertexConsumers);
+            MinecraftClient.getInstance().getItemRenderer().renderItem(stack, ModelTransformation.Mode.FIXED, light, overlay, matrices, vertexConsumers, 0);
             matrices.pop();
         }
     }

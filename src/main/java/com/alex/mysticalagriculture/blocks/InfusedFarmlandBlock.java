@@ -8,6 +8,7 @@ import net.minecraft.block.FarmlandBlock;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.context.LootContextParameters;
@@ -31,9 +32,10 @@ public class InfusedFarmlandBlock extends FarmlandBlock implements Colored {
     }
 
     @Override
-    public void onLandedUpon(World world, BlockPos pos, Entity entity, float distance) {
-        entity.handleFallDamage(distance, 1.0F);
+    public void onLandedUpon(World world, BlockState state, BlockPos pos, Entity entity, float fallDistance) {
+        entity.handleFallDamage(fallDistance, 1.0F, DamageSource.FALL);
     }
+
 
     @Override
     public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {

@@ -36,7 +36,7 @@ public class StackHelper {
         return !stack1.isEmpty() && !stack2.isEmpty() && stack1.isItemEqual(stack2);
     }
     public static boolean areStacksEqual(ItemStack stack1, ItemStack stack2) {
-        return areItemsEqual(stack1, stack2) && ItemStack.areTagsEqual(stack1, stack2);
+        return areItemsEqual(stack1, stack2) && ItemStack.areNbtEqual(stack1, stack2);
     }
 
     public static ItemStack combineStacks(ItemStack stack1, ItemStack stack2) {

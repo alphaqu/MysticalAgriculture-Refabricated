@@ -18,10 +18,9 @@ public class ElementSlot extends Slot implements ToggleableSlot {
     }
 
     @Override
-    public ItemStack onTakeItem(PlayerEntity player, ItemStack stack) {
-        ItemStack take = super.onTakeItem(player, stack);
+    public void onTakeItem(PlayerEntity player, ItemStack stack) {
+        super.onTakeItem(player, stack);
         this.screenHandler.onContentChanged(null);
-        return take;
     }
 
     @Override
@@ -31,7 +30,7 @@ public class ElementSlot extends Slot implements ToggleableSlot {
     }
 
     @Override
-    public boolean doDrawHoveringEffect() {
+    public boolean isEnabled() {
         ItemStack stack = this.inventory.getStack(0);
         Item item = stack.getItem();
         return item instanceof ElementalItem;

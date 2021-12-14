@@ -21,7 +21,7 @@ public class ReprocessorScreen extends BaseHandledScreen<ReprocessorContainer> {
     protected void drawForeground(MatrixStack matrices, int mouseX, int mouseY) {
         String title = this.getTitle().getString();
         this.textRenderer.draw(matrices, title, (float) (this.backgroundWidth / 2 - this.textRenderer.getWidth(title) / 2), 6.0F, 4210752);
-        String inventory = this.playerInventory.getDisplayName().getString();
+        String inventory = this.playerInventoryTitle.getString();
         this.textRenderer.draw(matrices, inventory, 8.0F, (float) (this.backgroundHeight - 96 + 2), 4210752);
     }
 

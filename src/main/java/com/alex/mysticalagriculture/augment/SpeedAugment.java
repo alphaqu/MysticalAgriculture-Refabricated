@@ -21,7 +21,7 @@ public class SpeedAugment extends Augment {
 
     @Override
     public void onPlayerTick(World world, PlayerEntity player, AbilityCache cache) {
-        boolean flying = player.abilities.flying;
+        boolean flying = player.getAbilities().flying;
         boolean swimming = player.isSwimming();
         boolean inWater = player.isTouchingWater();
 

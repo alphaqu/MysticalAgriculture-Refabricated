@@ -17,19 +17,19 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
-import net.minecraft.util.Tickable;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-public abstract class ReprocessorBlockEntity extends BaseInventoryBlockEntity implements NamedScreenHandlerFactory, Tickable, SidedInventory {
+public abstract class ReprocessorBlockEntity extends BaseInventoryBlockEntity implements NamedScreenHandlerFactory, SidedInventory {
     private int progress;
     private int fuel;
     private int fuelLeft;
@@ -57,13 +57,13 @@ public abstract class ReprocessorBlockEntity extends BaseInventoryBlockEntity im
         }
     };
 
-    public ReprocessorBlockEntity(BlockEntityType<?> type) {
-        super(type, 3);
+    public ReprocessorBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+        super(type, 3, pos, state);
     }
 
     @Override
-    public void fromTag(BlockState state, CompoundTag tag) {
-        super.fromTag(state, tag);
+    public void readNbt(NbtCompound tag) {
+        super.readNbt(tag);
         this.progress = tag.getInt("Progress");
         this.fuel = tag.getInt("Fuel");
         this.fuelLeft = tag.getInt("FuelLeft");
@@ -71,17 +71,17 @@ public abstract class ReprocessorBlockEntity extends BaseInventoryBlockEntity im
     }
 
     @Override
-    public CompoundTag toTag(CompoundTag tag) {
-        tag = super.toTag(tag);
+    public void writeNbt(NbtCompound tag) {
+        super.writeNbt(tag);
         tag.putInt("Progress", this.progress);
         tag.putInt("Fuel", this.fuel);
         tag.putInt("FuelLeft", this.fuelLeft);
         tag.putInt("FuelItemValue", this.fuelItemValue);
 
-        return tag;
+
     }
 
-    @Override
+    // TODO tick
     public void tick() {
         World world = this.getWorld();
         if (world == null || world.isClient())
@@ -230,8 +230,8 @@ public abstract class ReprocessorBlockEntity extends BaseInventoryBlockEntity im
     public abstract ReprocessorBlock.ReprocessorTier getTier();
 
     public static class Basic extends ReprocessorBlockEntity {
-        public Basic() {
-            super(BlockEntities.BASIC_REPROCESSOR);
+        public Basic(BlockPos pos, BlockState state) {
+            super(BlockEntities.BASIC_REPROCESSOR, pos, state);
         }
 
         @Override
@@ -240,8 +240,8 @@ public abstract class ReprocessorBlockEntity extends BaseInventoryBlockEntity im
         }
     }
     public static class Inferium extends ReprocessorBlockEntity {
-        public Inferium() {
-            super(BlockEntities.INFERIUM_REPROCESSOR);
+        public Inferium(BlockPos pos, BlockState state) {
+            super(BlockEntities.INFERIUM_REPROCESSOR, pos, state);
         }
 
         @Override
@@ -250,8 +250,8 @@ public abstract class ReprocessorBlockEntity extends BaseInventoryBlockEntity im
         }
     }
     public static class Prudentium extends ReprocessorBlockEntity {
-        public Prudentium() {
-            super(BlockEntities.PRUDENTIUM_REPROCESSOR);
+        public Prudentium(BlockPos pos, BlockState state) {
+            super(BlockEntities.PRUDENTIUM_REPROCESSOR, pos, state);
         }
 
         @Override
@@ -260,8 +260,8 @@ public abstract class ReprocessorBlockEntity extends BaseInventoryBlockEntity im
         }
     }
     public static class Tertium extends ReprocessorBlockEntity {
-        public Tertium() {
-            super(BlockEntities.TERTIUM_REPROCESSOR);
+        public Tertium(BlockPos pos, BlockState state) {
+            super(BlockEntities.TERTIUM_REPROCESSOR, pos, state);
         }
 
         @Override
@@ -270,8 +270,8 @@ public abstract class ReprocessorBlockEntity extends BaseInventoryBlockEntity im
         }
     }
     public static class Imperium extends ReprocessorBlockEntity {
-        public Imperium() {
-            super(BlockEntities.IMPERIUM_REPROCESSOR);
+        public Imperium(BlockPos pos, BlockState state) {
+            super(BlockEntities.IMPERIUM_REPROCESSOR, pos, state);
         }
 
         @Override
@@ -280,8 +280,8 @@ public abstract class ReprocessorBlockEntity extends BaseInventoryBlockEntity im
         }
     }
     public static class Supremium extends ReprocessorBlockEntity {
-        public Supremium() {
-            super(BlockEntities.SUPREMIUM_REPROCESSOR);
+        public Supremium(BlockPos pos, BlockState state) {
+            super(BlockEntities.SUPREMIUM_REPROCESSOR, pos, state);
         }
 
         @Override

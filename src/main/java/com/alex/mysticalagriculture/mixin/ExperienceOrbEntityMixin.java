@@ -39,7 +39,7 @@ public abstract class ExperienceOrbEntityMixin {
     }
 
     private List<ItemStack> getExperienceCapsules(PlayerEntity player) {
-        return player.inventory.main.stream()
+        return player.getInventory().main.stream()
                 .filter(s -> s.getItem() instanceof ExperienceCapsuleItem)
                 .collect(Collectors.toList());
     }

@@ -25,6 +25,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 public class InfusionPedestalBlock extends BaseBlockEntity implements BlockEntityProvider {
 
@@ -39,9 +40,10 @@ public class InfusionPedestalBlock extends BaseBlockEntity implements BlockEntit
         super(Material.STONE, BlockSoundGroup.STONE, 10.0F, 12.0F, FabricToolTags.PICKAXES);
     }
 
+    @Nullable
     @Override
-    public BlockEntity createBlockEntity(BlockView blockView) {
-        return new InfusionPedestalBlockEntity();
+    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+        return new InfusionPedestalBlockEntity(pos, state);
     }
 
     @Override

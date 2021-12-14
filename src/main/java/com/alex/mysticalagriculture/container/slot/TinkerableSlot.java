@@ -18,11 +18,11 @@ public class TinkerableSlot extends Slot {
     }
 
     @Override
-    public ItemStack onTakeItem(PlayerEntity player, ItemStack stack) {
+    public void onTakeItem(PlayerEntity player, ItemStack stack) {
         for (int i = 0; i < 2; i++) {
             this.inventory.removeStack(i + 1, 1);
         }
-        return super.onTakeItem(player, stack);
+        super.onTakeItem(player, stack);
     }
 
     @Override

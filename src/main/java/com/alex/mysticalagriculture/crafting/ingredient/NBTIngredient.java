@@ -11,7 +11,7 @@ public class NBTIngredient extends Ingredient {
     private final ItemStack stack;
     public NBTIngredient(ItemStack stack)
     {
-        super(Stream.of(new Ingredient.StackEntry(stack)));
+        super(Stream.of(new StackEntry(stack)));
         this.stack = stack;
     }
 

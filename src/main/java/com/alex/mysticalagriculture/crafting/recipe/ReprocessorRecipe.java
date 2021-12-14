@@ -41,7 +41,7 @@ public class ReprocessorRecipe implements SpecialRecipe, com.alex.mysticalagricu
     }
 
     @Override
-    public DefaultedList<Ingredient> getPreviewInputs() {
+    public DefaultedList<Ingredient> getIngredients() {
         return this.inputs;
     }
 
@@ -72,7 +72,7 @@ public class ReprocessorRecipe implements SpecialRecipe, com.alex.mysticalagricu
         public ReprocessorRecipe read(Identifier id, JsonObject json) {
             JsonObject ingredient = json.getAsJsonObject("input");
             Ingredient input = Ingredient.fromJson(ingredient);
-            ItemStack output = ShapedRecipe.getItemStack(json.getAsJsonObject("result"));
+            ItemStack output = ShapedRecipe.getItem(json.getAsJsonObject("result")).getDefaultStack();
 
             return new ReprocessorRecipe(id, input, output);
         }

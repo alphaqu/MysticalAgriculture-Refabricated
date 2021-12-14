@@ -7,6 +7,7 @@ import com.alex.mysticalagriculture.util.item.BaseItem;
 import com.alex.mysticalagriculture.api.util.MobSoulUtils;
 import net.minecraft.client.item.ModelPredicateProvider;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.client.item.UnclampedModelPredicateProvider;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
@@ -50,8 +51,8 @@ public class SoulJarItem extends BaseItem {
         }
     }
 
-    public static ModelPredicateProvider getFillPropertyGetter() {
-        return (stack, world, entity) -> {
+    public static UnclampedModelPredicateProvider getFillPropertyGetter() {
+        return (stack, world, entity, seed) -> {
             MobSoulType type = MobSoulUtils.getType(stack);
             if (type != null) {
                 double souls = MobSoulUtils.getSouls(stack);

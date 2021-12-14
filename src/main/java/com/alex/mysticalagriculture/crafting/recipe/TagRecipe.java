@@ -1,6 +1,7 @@
 package com.alex.mysticalagriculture.crafting.recipe;
 
 import com.alex.mysticalagriculture.init.RecipeSerializers;
+import com.alex.mysticalagriculture.mixin.ShapedRecipeAccessor;
 import com.alex.mysticalagriculture.util.crafting.TagMapper;
 import com.google.gson.JsonObject;
 import net.fabricmc.fabric.api.tag.TagRegistry;
@@ -33,11 +34,11 @@ public class TagRecipe extends ShapedNoMirrorRecipe {
         @Override
         public TagRecipe read(Identifier recipeId, JsonObject json) {
             String group = JsonHelper.getString(json, "group", "");
-            Map<String, Ingredient> map = ShapedRecipe.getComponents(JsonHelper.getObject(json, "key"));
-            String[] pattern = ShapedRecipe.combinePattern(ShapedRecipe.getPattern(JsonHelper.getArray(json, "pattern")));
+            Map<String, Ingredient> map = ShapedRecipeAccessor.invokeReadSymbols(JsonHelper.getObject(json, "key"));
+            String[] pattern = ShapedRecipeAccessor.invokeRemovePadding(ShapedRecipe.getPattern(JsonHelper.getArray(json, "pattern")));
             int width = pattern[0].length();
             int height = pattern.length;
-            DefaultedList<Ingredient> ingredients = ShapedRecipe.getIngredients(pattern, map, width, height);
+            DefaultedList<Ingredient> ingredients = ShapedRecipeAccessor.invokeCreatePatternMatrix(pattern, map, width, height);
 
             JsonObject result = JsonHelper.getObject(json, "result");
             String tag = JsonHelper.getString(result, "tag");
@@ -73,7 +74,7 @@ public class TagRecipe extends ShapedNoMirrorRecipe {
             buffer.writeVarInt(recipe.getHeight());
             buffer.writeString(recipe.group);
 
-            for (Ingredient ingredient : recipe.getPreviewInputs()) {
+            for (Ingredient ingredient : recipe.getIngredients()) {
                 ingredient.write(buffer);
             }
 

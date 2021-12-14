@@ -82,7 +82,7 @@ public class LivingEntityMixin {
     }
 
     private static List<ItemStack> getValidSoulJars(PlayerEntity player, MobSoulType type) {
-        return player.inventory.main.stream()
+        return player.getInventory().main.stream()
                 .filter(s -> s.getItem() instanceof SoulJarItem)
                 .filter(s -> MobSoulUtils.canAddTypeToJar(s, type))
                 .sorted((a, b) -> MobSoulUtils.getType(a) != null ? -1 : MobSoulUtils.getType(b) != null ? 0 : 1)

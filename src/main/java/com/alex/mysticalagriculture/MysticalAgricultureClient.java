@@ -15,29 +15,31 @@ import com.alex.mysticalagriculture.lib.ModAugments;
 import com.alex.mysticalagriculture.lib.ModCrops;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
-import net.fabricmc.fabric.api.client.rendereregistry.v1.BlockEntityRendererRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.client.model.FabricModelPredicateProviderRegistry;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.util.Identifier;
 
+
 public class MysticalAgricultureClient implements ClientModInitializer {
-    @Override
-    public void onInitializeClient() {
-        BlockEntityRendererRegistry.INSTANCE.register(BlockEntities.INFUSION_PEDESTAL, InfusionPedestalRenderer::new);
-        BlockEntityRendererRegistry.INSTANCE.register(BlockEntities.INFUSION_ALTAR, InfusionAltarRenderer::new);
-        BlockEntityRendererRegistry.INSTANCE.register(BlockEntities.TINKERING_TABLE, TinkeringTableRenderer::new);
+	@Override
+	public void onInitializeClient() {
+		BlockEntityRendererRegistry.register(BlockEntities.INFUSION_PEDESTAL, ctx -> new InfusionPedestalRenderer());
+		BlockEntityRendererRegistry.register(BlockEntities.INFUSION_ALTAR, ctx -> new InfusionAltarRenderer());
+		BlockEntityRendererRegistry.register(BlockEntities.TINKERING_TABLE, ctx -> new TinkeringTableRenderer());
 
-        FabricModelPredicateProviderRegistry.register(Items.SOUL_JAR, new Identifier("fill"), SoulJarItem.getFillPropertyGetter());
-        FabricModelPredicateProviderRegistry.register(Items.EXPERIENCE_CAPSULE, new Identifier("fill"), ExperienceCapsuleItem.getFillPropertyGetter());
-        ScreenRegistry.register(ScreenHandlerTypes.REPROCESSOR, ReprocessorScreen::new);
-        ScreenRegistry.register(ScreenHandlerTypes.TINKERING_TABLE, TinkeringTableScreen::new);
-        BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutoutMipped(), Blocks.INFERIUM_ORE, Blocks.PROSPERITY_ORE, Blocks.SOULIUM_ORE);
-        BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getTranslucent(), Blocks.SOUL_GLASS, Blocks.WITHERPROOF_GLASS);
+		FabricModelPredicateProviderRegistry.register(Items.SOUL_JAR, new Identifier("fill"), SoulJarItem.getFillPropertyGetter());
+		FabricModelPredicateProviderRegistry.register(Items.EXPERIENCE_CAPSULE, new Identifier("fill"), ExperienceCapsuleItem.getFillPropertyGetter());
+		ScreenRegistry.register(ScreenHandlerTypes.REPROCESSOR, ReprocessorScreen::new);
+		ScreenRegistry.register(ScreenHandlerTypes.TINKERING_TABLE, TinkeringTableScreen::new);
+		BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutoutMipped(), Blocks.INFERIUM_ORE, Blocks.PROSPERITY_ORE, Blocks.SOULIUM_ORE);
+		BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getTranslucent(), Blocks.SOUL_GLASS, Blocks.WITHERPROOF_GLASS);
 
-        Blocks.onColors();
-        Items.onColors();
-        ModAugments.onColors();
-        ModCrops.onColors();
-    }
+		Blocks.onColors();
+		Items.onColors();
+		ModAugments.onColors();
+		ModCrops.onColors();
+	}
+
 }

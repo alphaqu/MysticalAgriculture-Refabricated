@@ -31,7 +31,7 @@ public class AttackAOEAugment extends Augment {
 
                 for (LivingEntity aoeEntity : entities) {
                     if (aoeEntity != player && aoeEntity != target && !player.isTeammate(target)) {
-                        aoeEntity.takeKnockback(0.4F, MathHelper.sin(player.yaw * 0.017453292F), -MathHelper.cos(player.yaw * 0.017453292F));
+                        aoeEntity.takeKnockback(0.4F, MathHelper.sin(player.getYaw() * 0.017453292F), -MathHelper.cos(player.getYaw() * 0.017453292F));
                         aoeEntity.damage(DamageSource.player(player), 13.0F); // TODO: 1.16: should this damage value be hardcoded?
                     }
                 }

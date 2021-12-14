@@ -7,7 +7,7 @@ import com.alex.mysticalagriculture.lib.ModAugments;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -24,10 +24,10 @@ public class AugmentUtils {
         if (item instanceof Tinkerable) {
             Tinkerable tinkerable = (Tinkerable) item;
             if (slot < tinkerable.getAugmentSlots() && tinkerable.getTinkerableTier() >= augment.getTier()) {
-                CompoundTag nbt = stack.getTag();
+                NbtCompound nbt = stack.getNbt();
                 if (nbt == null) {
-                    nbt = new CompoundTag();
-                    stack.setTag(nbt);
+                    nbt = new NbtCompound();
+                    stack.setNbt(nbt);
                 }
 
                 nbt.putString("Augment-" + slot, augment.getId().toString());
@@ -36,7 +36,7 @@ public class AugmentUtils {
     }
 
     public static void removeAugment(ItemStack stack, int slot) {
-        CompoundTag nbt = stack.getTag();
+        NbtCompound nbt = stack.getNbt();
         if (nbt == null)
             return;
 
@@ -50,7 +50,7 @@ public class AugmentUtils {
     }
 
     public static Augment getAugment(ItemStack stack, int slot) {
-        CompoundTag nbt = stack.getTag();
+        NbtCompound nbt = stack.getNbt();
         if (nbt == null)
             return null;
 
@@ -67,7 +67,7 @@ public class AugmentUtils {
     }
 
     public static List<Augment> getAugments(ItemStack stack) {
-        CompoundTag nbt = stack.getTag();
+        NbtCompound nbt = stack.getNbt();
         List<Augment> augments = new ArrayList<>();
         if (nbt == null)
             return augments;
@@ -87,7 +87,7 @@ public class AugmentUtils {
     }
 
     public static List<Augment> getArmorAugments(PlayerEntity player) {
-        DefaultedList<ItemStack> armor = player.inventory.armor;
+        DefaultedList<ItemStack> armor = player.getInventory().armor;
         List<Augment> augments = new ArrayList<>();
         for (ItemStack stack : armor) {
             augments.addAll(getAugments(stack));

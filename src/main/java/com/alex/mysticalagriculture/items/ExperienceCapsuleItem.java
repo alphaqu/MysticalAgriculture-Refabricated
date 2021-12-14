@@ -5,6 +5,7 @@ import com.alex.mysticalagriculture.lib.ModTooltips;
 import com.alex.mysticalagriculture.util.item.BaseItem;
 import net.minecraft.client.item.ModelPredicateProvider;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.client.item.UnclampedModelPredicateProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
@@ -24,8 +25,8 @@ public class ExperienceCapsuleItem extends BaseItem {
         tooltip.add(ModTooltips.EXPERIENCE_CAPSULE.args(experience, ExperienceCapsuleUtils.MAX_XP_POINTS).build());
     }
 
-    public static ModelPredicateProvider getFillPropertyGetter() {
-        return (stack, world, entity) -> {
+    public static UnclampedModelPredicateProvider getFillPropertyGetter() {
+        return (stack, world, entity, seed) -> {
             int experience = ExperienceCapsuleUtils.getExperience(stack);
             if (experience > 0) {
                 double level = (double) experience / ExperienceCapsuleUtils.MAX_XP_POINTS;

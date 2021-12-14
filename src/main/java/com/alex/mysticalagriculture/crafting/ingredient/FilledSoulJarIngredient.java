@@ -12,7 +12,7 @@ import it.unimi.dsi.fastutil.ints.IntComparators;
 import it.unimi.dsi.fastutil.ints.IntList;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.RecipeFinder;
+import net.minecraft.recipe.RecipeMatcher;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
@@ -28,15 +28,15 @@ public class FilledSoulJarIngredient extends Ingredient {
     }
 
     @Override
-    public ItemStack[] getMatchingStacksClient() {
+    public ItemStack[] getMatchingStacks() {
         return this.stacks;
     }
 
     @Override
-    public IntList getIds() {
+    public IntList getMatchingItemIds() {
         if (this.stacksPacked == null) {
             this.stacksPacked = new IntArrayList(this.stacks.length);
-            Arrays.stream(this.stacks).forEach(s -> this.stacksPacked.add(RecipeFinder.getItemId(s)));
+            Arrays.stream(this.stacks).forEach(s -> this.stacksPacked.add(RecipeMatcher.getItemId(s)));
             this.stacksPacked.sort(IntComparators.NATURAL_COMPARATOR);
         }
 

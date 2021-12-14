@@ -24,6 +24,6 @@ public interface SpecialRecipe extends Recipe<Inventory> {
             inputs.add(inventory.getStack(i));
         }
 
-        return RecipeMatcher.findMatches(inputs, this.getPreviewInputs()) != null;
+        return RecipeMatcher.findMatches(inputs, this.getIngredients()) != null;
     }
 }

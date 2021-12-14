@@ -12,61 +12,61 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 
 public class AugmentSlot extends Slot implements ToggleableSlot {
-    private final ScreenHandler screenHandler;
-    private final int augmentSlot;
+	private final ScreenHandler screenHandler;
+	private final int augmentSlot;
 
-    public AugmentSlot(ScreenHandler screenHandler, Inventory inventory, int index, int x, int y, int augmentSlot) {
-        super(inventory, index, x, y);
-        this.screenHandler = screenHandler;
-        this.augmentSlot = augmentSlot;
-    }
+	public AugmentSlot(ScreenHandler screenHandler, Inventory inventory, int index, int x, int y, int augmentSlot) {
+		super(inventory, index, x, y);
+		this.screenHandler = screenHandler;
+		this.augmentSlot = augmentSlot;
+	}
 
-    @Override
-    public ItemStack onTakeItem(PlayerEntity player, ItemStack stack) {
-        ItemStack take = super.onTakeItem(player, stack);
-        this.screenHandler.onContentChanged(null);
-        return take;
-    }
 
-    @Override
-    public void setStack(ItemStack stack) {
-        super.setStack(stack);
-        this.screenHandler.onContentChanged(null);
-    }
+	@Override
+	public void onTakeItem(PlayerEntity player, ItemStack stack) {
+		super.onTakeItem(player, stack);
+		this.screenHandler.onContentChanged(null);
+	}
 
-    @Override
-    public boolean canInsert(ItemStack stack) {
-        if (!super.canInsert(stack))
-            return false;
+	@Override
+	public void setStack(ItemStack stack) {
+		super.setStack(stack);
+		this.screenHandler.onContentChanged(null);
+	}
 
-        ItemStack stackInSlot = this.inventory.getStack(0);
-        Item tinkerableItem = stackInSlot.getItem();
-        Item augmentItem = stack.getItem();
-        if (tinkerableItem instanceof Tinkerable && augmentItem instanceof AugmentProvider) {
-            Tinkerable tinkerable = (Tinkerable) tinkerableItem;
-            Augment augment = ((AugmentProvider) augmentItem).getAugment();
+	@Override
+	public boolean canInsert(ItemStack stack) {
+		if (!super.canInsert(stack))
+			return false;
 
-            return tinkerable.canApplyAugment(augment);
-        }
+		ItemStack stackInSlot = this.inventory.getStack(0);
+		Item tinkerableItem = stackInSlot.getItem();
+		Item augmentItem = stack.getItem();
+		if (tinkerableItem instanceof Tinkerable && augmentItem instanceof AugmentProvider) {
+			Tinkerable tinkerable = (Tinkerable) tinkerableItem;
+			Augment augment = ((AugmentProvider) augmentItem).getAugment();
 
-        return false;
-    }
+			return tinkerable.canApplyAugment(augment);
+		}
 
-    @Override
-    public boolean doDrawHoveringEffect() {
-        ItemStack stack = this.inventory.getStack(0);
-        Item item = stack.getItem();
-        if (item instanceof Tinkerable) {
-            Tinkerable tinkerable = (Tinkerable) item;
-            return this.augmentSlot < tinkerable.getAugmentSlots();
-        }
+		return false;
+	}
 
-        return false;
-    }
+	@Override
+	public boolean isEnabled() {
+		ItemStack stack = this.inventory.getStack(0);
+		Item item = stack.getItem();
+		if (item instanceof Tinkerable) {
+			Tinkerable tinkerable = (Tinkerable) item;
+			return this.augmentSlot < tinkerable.getAugmentSlots();
+		}
 
-    @Override
-    public int getMaxItemCount() {
-        return 1;
-    }
+		return false;
+	}
+
+	@Override
+	public int getMaxItemCount() {
+		return 1;
+	}
 
 }

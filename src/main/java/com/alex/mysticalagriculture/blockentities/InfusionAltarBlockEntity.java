@@ -11,12 +11,11 @@ import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ItemStackParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.Tickable;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -25,10 +24,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class
-InfusionAltarBlockEntity extends BaseInventoryBlockEntity implements Tickable, SidedInventory {
+InfusionAltarBlockEntity extends BaseInventoryBlockEntity implements SidedInventory {
 
     private final SimpleInventory recipeInventory = new SimpleInventory(9);
     private final MultiblockPositions pedestalLocations = new MultiblockPositions.Builder()
@@ -39,27 +37,29 @@ InfusionAltarBlockEntity extends BaseInventoryBlockEntity implements Tickable, S
     private int progress;
     private boolean active;
 
-    public InfusionAltarBlockEntity() {
-        super(BlockEntities.INFUSION_ALTAR, 2);
+    public InfusionAltarBlockEntity(BlockPos pos, BlockState state) {
+        super(BlockEntities.INFUSION_ALTAR, 2, pos, state);
     }
 
+
     @Override
-    public void fromTag(BlockState state, CompoundTag tag) {
-        super.fromTag(state, tag);
-        Inventories.fromTag(tag, getStacks());
+    public void readNbt(NbtCompound tag) {
+        super.readNbt(tag);
+        Inventories.readNbt(tag, getStacks());
         this.progress = tag.getInt("Progress");
         this.active = tag.getBoolean("Active");
     }
 
-    @Override
-    public CompoundTag toTag(CompoundTag tag) {
-        Inventories.toTag(tag, getStacks());
-        tag.putInt("Progress", this.progress);
-        tag.putBoolean("Active", this.active);
-        return super.toTag(tag);
-    }
+
 
     @Override
+    public void writeNbt(NbtCompound tag) {
+        Inventories.writeNbt(tag, getStacks());
+        tag.putInt("Progress", this.progress);
+        tag.putBoolean("Active", this.active);
+         super.writeNbt(tag);
+    }
+
     public void tick() {
         World world = this.getWorld();
         if (world != null && !world.isClient()) {
@@ -79,7 +79,7 @@ InfusionAltarBlockEntity extends BaseInventoryBlockEntity implements Tickable, S
                 if (this.recipe != null) {
                     this.progress++;
                     if (this.progress >= 100) {
-                        DefaultedList<ItemStack> remaining = this.recipe.getRemainingStacks(this.recipeInventory);
+                        DefaultedList<ItemStack> remaining = this.recipe.getRemainder(this.recipeInventory);
                         for (int i = 0; i < pedestals.size(); i++) {
                             InfusionPedestalBlockEntity pedestal = pedestals.get(i);
                             pedestal.setStack(0, remaining.get(i + 1));
